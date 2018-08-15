@@ -18,6 +18,10 @@ android {
             buildConfigField "int", "SERVER_API_VERSION", "1"
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -39,6 +43,10 @@ dependencies {
 
     // GSON
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    // Butter knife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     // Tests
     testImplementation 'junit:junit:4.12'

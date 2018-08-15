@@ -21,7 +21,12 @@ public interface IViewContract {
     /**
      * Нет контента
      */
-    void showEmptyState();
+    void showEmptyContentMessage();
+
+    /**
+     * скрыть контент и все empty states (нет интернета, ошибка ссервера, нет контента, прогресс)
+     */
+    void clearScreen();
 
     /**
     * Старт прогресса

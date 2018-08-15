@@ -2,7 +2,7 @@ package artemshumidub.ru.sebbianews.ui.activity.base;
 
 public interface BasePresenter<V extends IViewContract> {
 
-    void attachView(@SuppressWarnings("UnusedParameters") V view);
+    void attachView(@SuppressWarnings("UnusedParameters") V IViewContract);
 
     @SuppressWarnings("unused")
     void detachView();

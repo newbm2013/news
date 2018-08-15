@@ -1,11 +1,21 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
+import java.util.List;
+
 import artemshumidub.ru.sebbianews.ui.activity.base.BasePresenter;
 import artemshumidub.ru.sebbianews.ui.activity.base.IViewContract;
-import artemshumidub.ru.sebbianews.ui.activity.news.INewsContract;
 
 public interface ICategoriesContract  {
-    interface IView extends IViewContract{}
 
-    interface IPresenter extends BasePresenter<INewsContract.IView> {}
+    interface IView extends IViewContract{
+
+        //todo change generic type
+        void setCategories(List<String> list);
+    }
+
+    interface IPresenter extends BasePresenter<ICategoriesContract.IView> {
+
+        void getCategories();
+
+    }
 }
