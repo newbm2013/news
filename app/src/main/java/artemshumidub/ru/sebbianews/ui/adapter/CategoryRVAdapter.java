@@ -22,7 +22,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
     private final Context context;
     private OnItemListener onItemlistener;
 
-    CategoryRVAdapter(Context context, List<Category> list) {
+    public CategoryRVAdapter(Context context, List<Category> list) {
         this.list = list;
         this.context = context;
     }
@@ -58,11 +58,11 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
         }
     }
 
-    public void setOnItemlistener(OnItemListener onItemlistener) {
+    public void setOnItemListener(OnItemListener onItemlistener) {
         this.onItemlistener = onItemlistener;
     }
 
-    interface OnItemListener{
+    public interface OnItemListener{
         void onItemClick(int id);
     }
 
