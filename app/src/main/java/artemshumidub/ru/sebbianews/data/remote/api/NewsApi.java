@@ -1,7 +1,7 @@
 package artemshumidub.ru.sebbianews.data.remote.api;
 
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface NewsApi {
@@ -11,7 +11,7 @@ public interface NewsApi {
     *
     */
 
-    @GET("/news/categories")
-    Call<CategoryResponse> getListOfCategories();
+    @GET("news/categories")
+    Observable<CategoryResponse> getListOfCategories();
 
 }

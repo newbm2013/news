@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class CategoryResponse {
+import artemshumidub.ru.sebbianews.data.entity.Category;
 
+public class CategoryResponse {
     @SerializedName("code")
     private int code;
 
@@ -27,32 +28,4 @@ public class CategoryResponse {
     public void setList(List<Category> list) {
         this.list = list;
     }
-
-    class Category {
-
-        @SerializedName("id")
-        private int id;
-
-        @SerializedName("name")
-        private String name;
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
 }
-
-
-
