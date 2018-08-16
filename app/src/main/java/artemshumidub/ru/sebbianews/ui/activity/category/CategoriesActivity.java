@@ -2,6 +2,7 @@ package artemshumidub.ru.sebbianews.ui.activity.category;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -48,6 +49,7 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         presenter.getCategories();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
