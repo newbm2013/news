@@ -1,4 +1,5 @@
 package artemshumidub.ru.sebbianews.data.remote;
 
-public interface RestService {
+public interface RetrofitService {
+
 }

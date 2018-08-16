@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 
 /**
  * Connection Util
- *
  */
 
 public class ConnectionUtil{
