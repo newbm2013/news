@@ -60,14 +60,12 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     public void showInternetError() {
         clearScreen();
         internetErrorLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override
     public void showServerError() {
         clearScreen();
         serverErrorLayout.setVisibility(View.VISIBLE);
-
     }
 
     @Override
@@ -103,7 +101,6 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
         }
-
     }
 
     @Override
