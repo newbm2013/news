@@ -2,6 +2,7 @@ package artemshumidub.ru.sebbianews.ui.activity.category;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
+import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,11 +49,10 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         presenter.getCategories();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            startProgress();
-            swipeRefreshLayout.setRefreshing(true);
             presenter.getCategories();
         });
     }
@@ -104,9 +105,9 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     }
 
     @Override
-    public void setCategories(List<String> list) {
+    public void setCategories(List<Category> list) {
         //todo change parameter List
-        FakeRVAdapter adapter = new FakeRVAdapter(this, new ArrayList());
+        CategoryRVAdapter adapter = new CategoryRVAdapter(this, list);
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);

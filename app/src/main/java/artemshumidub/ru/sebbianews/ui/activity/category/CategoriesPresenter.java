@@ -1,15 +1,21 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
-import android.os.SystemClock;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.data.entity.Category;
+import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
+import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
+import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
+import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     private ICategoriesContract.IView view;
+    private RemoteRepository remoteRepository;
 
     CategoriesPresenter(ICategoriesContract.IView view){
         attachView(view);
@@ -50,20 +56,39 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     @Override
     public void getCategories() {
+        view.startProgress();
         if(!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
-            // todo get items and change parameter type
-            new Thread(
-                    ()->{
-                        for (int i=0; i<Integer.MAX_VALUE/100; i++){int i2 = i;}
-                        ((CategoriesActivity) view).recyclerView.post(()-> {
-                            List list = new ArrayList<String>();
+
+            if (remoteRepository == null){
+                remoteRepository = new RemoteRepository((CategoriesActivity) view);
+            }
+
+            Observable<CategoryResponse> observable = remoteRepository.getCategory();
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<CategoryResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {  }
+
+                        @Override
+                        public void onNext(CategoryResponse response) {
                             view.stopProgress();
-                            //todo delete random
-                            if (list.size() == 0 && SystemClock.currentThreadTimeMillis()%2==0) view.showEmptyContentMessage();
-                            else view.setCategories(list);
-                        });
-                    }).start();
+                            if (response.getList().size() == 0) view.showEmptyContentMessage();
+                            else view.setCategories(response.getList());
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e instanceof ServerErrorException){view.showServerError();}
+                            else if (e instanceof NoInternetException){view.showInternetError();}
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            view.stopProgress();
+                        }
+                    });
         }
     }
 }
