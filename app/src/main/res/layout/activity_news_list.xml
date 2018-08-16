@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.category.CategoriesActivity">
+    tools:context=".ui.activity.newslist.NewsListActivity">
+
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/category_swipe_refresh_layout"
+        android:id="@+id/news_list_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +18,7 @@
         tools:visibility="visible">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/category_rv"
+            android:id="@+id/news_list_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
