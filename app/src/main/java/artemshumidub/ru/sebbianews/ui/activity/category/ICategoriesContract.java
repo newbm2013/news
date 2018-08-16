@@ -10,8 +10,9 @@ public interface ICategoriesContract  {
 
     interface IView extends IViewContract{
 
-
         void setCategories(List<Category> list);
+
+        void goToNewsList(int idCategory);
     }
 
     interface IPresenter extends BasePresenter<ICategoriesContract.IView> {
