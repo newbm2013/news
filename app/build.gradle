@@ -14,8 +14,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/\""
-            buildConfigField "int", "SERVER_API_VERSION", "1"
+            buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
         }
     }
     compileOptions {
@@ -44,7 +43,7 @@ dependencies {
     // GSON
     implementation 'com.google.code.gson:gson:2.8.2'
 
-    // Butter knife
+    // ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
