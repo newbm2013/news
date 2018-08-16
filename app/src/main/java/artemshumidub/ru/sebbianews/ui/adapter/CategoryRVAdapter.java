@@ -1,4 +1,4 @@
-package artemshumidub.ru.sebbianews.ui.activity.category;
+package artemshumidub.ru.sebbianews.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
 
     private final List<Category> list;
     private final Context context;
+    private OnItemListener onItemlistener;
 
     CategoryRVAdapter(Context context, List<Category> list) {
         this.list = list;
@@ -34,7 +36,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         holder.itemTextView.setText(list.get(position).getName());
-        holder.itemTextView.setTag(list.get(position).getId());
+        holder.llCategoryItem.setOnClickListener((v)->onItemlistener.onItemClick(list.get(position).getId()));
     }
 
     @Override
@@ -43,6 +45,10 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
     }
 
     class Holder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.ll_category_item)
+        LinearLayout llCategoryItem;
+
         @BindView(R.id.tv)
         TextView itemTextView;
 
@@ -51,4 +57,13 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public void setOnItemlistener(OnItemListener onItemlistener) {
+        this.onItemlistener = onItemlistener;
+    }
+
+    interface OnItemListener{
+        void onItemClick(int id);
+    }
+
 }

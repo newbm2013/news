@@ -1,5 +1,6 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,12 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
+import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
+import artemshumidub.ru.sebbianews.ui.adapter.CategoryRVAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -39,11 +41,15 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
 
     private CategoriesPresenter presenter;
 
+    public static final String ID_CATEGORY_KEY = "idCategory";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
+
+        getSupportActionBar().setTitle("Список категорий");
 
         presenter = new CategoriesPresenter(this);
         presenter.getCategories();
@@ -108,9 +114,17 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     public void setCategories(List<Category> list) {
         //todo change parameter List
         CategoryRVAdapter adapter = new CategoryRVAdapter(this, list);
+        adapter.setOnItemlistener(this::goToNewsList);
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void goToNewsList(int idCategory) {
+        Intent intent = new Intent(this, NewsListActivity.class);
+        intent.putExtra(ID_CATEGORY_KEY, idCategory);
+        startActivity(intent);
     }
 }
