@@ -8,6 +8,7 @@ public interface NewsApi {
 
     /**
     * Получить список категорий
+    *
     */
 
     @GET("/news/categories")

@@ -16,6 +16,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
         }
+        debug{
+            buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
+        }
     }
     compileOptions {
         targetCompatibility 1.8
