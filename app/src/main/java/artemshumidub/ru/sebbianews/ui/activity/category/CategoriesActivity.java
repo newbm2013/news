@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
+import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,8 +51,6 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
 
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            startProgress();
-            swipeRefreshLayout.setRefreshing(true);
             presenter.getCategories();
         });
     }
@@ -104,9 +103,9 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     }
 
     @Override
-    public void setCategories(List<String> list) {
+    public void setCategories(List<Category> list) {
         //todo change parameter List
-        FakeRVAdapter adapter = new FakeRVAdapter(this, new ArrayList());
+        CategoryRVAdapter adapter = new CategoryRVAdapter(this, list);
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
