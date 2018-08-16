@@ -4,20 +4,23 @@
     android:id="@+id/ll_news_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/standard_padding">
 
     <TextView
         android:id="@+id/tv_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_head"
-        android:padding="@dimen/standard_padding"/>
+        android:textColor="@color/colorPrimaryDark"
+        />
 
     <TextView
         android:id="@+id/tv_short_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_body"
-        android:padding="@dimen/standard_padding"/>
+        android:paddingTop="@dimen/short_padding"
+        android:paddingBottom="@dimen/short_padding"/>
 
 </LinearLayout>

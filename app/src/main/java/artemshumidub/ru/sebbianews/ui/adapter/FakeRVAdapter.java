@@ -1,4 +1,4 @@
-package artemshumidub.ru.sebbianews.ui.activity.category;
+package artemshumidub.ru.sebbianews.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

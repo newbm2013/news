@@ -1,4 +1,4 @@
-package artemshumidub.ru.sebbianews.ui.activity.category;
+package artemshumidub.ru.sebbianews.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,17 +12,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
-import artemshumidub.ru.sebbianews.data.entity.News;
+import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Holder> {
 
-    private final List<News> list;
+    private final List<ShortNews> list;
     private final Context context;
     private OnItemListener onItemlistener;
 
-    NewsListRVAdapter(Context context, List<News> list) {
+    public NewsListRVAdapter(Context context, List<ShortNews> list) {
         this.list = list;
         this.context = context;
     }
@@ -30,13 +30,13 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false));
+        return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         holder.tvHead.setText(list.get(position).getTitle());
-        holder.tvShortDesc.setTag(list.get(position).getShortDescription());
+        holder.tvShortDesc.setText(list.get(position).getShortDescription());
         int idNews = list.get(position).getId();
         holder.llNewsItem.setOnClickListener((v)->onItemlistener.onItemClick(idNews));
     }

@@ -2,7 +2,7 @@ package artemshumidub.ru.sebbianews.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+public class ShortNews {
 
     @SerializedName("id")
     private int id;

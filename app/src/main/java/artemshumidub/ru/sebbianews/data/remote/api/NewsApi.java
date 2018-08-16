@@ -19,10 +19,10 @@ public interface NewsApi {
     @GET("news/categories")
     Observable<CategoryResponse> getListOfCategories();
 
-    @GET("/news/categories/{id}/news")
-    Observable<NewsListByCategoryResponse> getNewsListInCategories(@Path("id") int idCategory, @Query("page") int page);
+    @GET("news/categories/{id}/news")
+    Observable<NewsListByCategoryResponse> getNewsList(@Path("id") int idCategory, @Query("page") int page);
 
-    @GET("/news/details")
-    Observable<NewsResponse> getFullNews(@Query("id") int idNews);
+    @GET("news/details")
+    Observable<NewsResponse> getNews(@Query("id") int idNews);
 
 }

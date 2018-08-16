@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import artemshumidub.ru.sebbianews.data.entity.News;
+import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 
 public class NewsListByCategoryResponse {
 
@@ -12,7 +12,7 @@ public class NewsListByCategoryResponse {
     private Long code;
 
     @SerializedName("list")
-    private List<News> list;
+    private List<ShortNews> list;
 
     public Long getCode() {
         return code;
@@ -22,11 +22,11 @@ public class NewsListByCategoryResponse {
         this.code = code;
     }
 
-    public List<News> getList() {
+    public List<ShortNews> getList() {
         return list;
     }
 
-    public void setList(List<News> list) {
+    public void setList(List<ShortNews> list) {
         this.list = list;
     }
 }
