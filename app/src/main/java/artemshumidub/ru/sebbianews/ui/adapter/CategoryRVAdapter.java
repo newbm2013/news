@@ -63,7 +63,7 @@ public class CategoryRVAdapter extends RecyclerView.Adapter<CategoryRVAdapter.Ho
     }
 
     public interface OnItemListener{
-        void onItemClick(int id);
+        void onItemClick(long id);
     }
 
 }
