@@ -13,18 +13,19 @@ import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
+import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Holder> {
 
     private final List<ShortNews> list;
-    private final Context context;
     private OnItemListener onItemlistener;
+    private OnNearLastPosition onLastPosition;
+    private boolean isLastPositionCallbackEnable = false;
 
     public NewsListRVAdapter(Context context, List<ShortNews> list) {
         this.list = list;
-        this.context = context;
     }
 
     @NonNull
@@ -40,6 +41,13 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         holder.tvShortDesc.setText(list.get(position).getShortDescription());
         long idNews = list.get(position).getId();
         holder.llNewsItem.setOnClickListener((v)->onItemlistener.onItemClick(idNews));
+
+        if (!isLastPositionCallbackEnable
+                & getItemCount()-1 == position
+                & getItemCount()>=NewsListActivity.NEWS_PER_PAGE){
+            isLastPositionCallbackEnable = true;
+            onLastPosition.doOnCallback(list);
+        }
     }
 
     @Override
@@ -67,12 +75,27 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         }
     }
 
-    public void setOnItemlistener(OnItemListener onItemlistener) {
-        this.onItemlistener = onItemlistener;
+    public void setOnItemListener(OnItemListener onItemListener) {
+        this.onItemlistener = onItemListener;
+    }
+
+    public void setOnLastPosition(OnNearLastPosition onLastPosition) {
+        this.onLastPosition = onLastPosition;
+    }
+
+    public void setLastPositionCallbackEnable(boolean lastPositionCallbackEnable) {
+        isLastPositionCallbackEnable = lastPositionCallbackEnable;
     }
 
     public interface OnItemListener{
         void onItemClick(long id);
     }
 
+    public interface OnNearLastPosition{
+        void doOnCallback(List<ShortNews> oldList);
+    }
+
+    public List<ShortNews> getList() {
+        return list;
+    }
 }
