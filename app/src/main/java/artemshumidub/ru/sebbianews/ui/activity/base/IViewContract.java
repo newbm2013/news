@@ -28,14 +28,4 @@ public interface IViewContract {
      */
     void clearScreen();
 
-    /**
-    * Старт прогресса
-    */
-    void startProgress();
-
-    /**
-     * Стоп прогресса
-     */
-    void stopProgress();
-
 }

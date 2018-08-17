@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="36dp"
-        android:textSize="@dimen/text_head"
+        android:textSize="@dimen/text_head_size"
         android:text="@string/server_error" />
 
 </FrameLayout>

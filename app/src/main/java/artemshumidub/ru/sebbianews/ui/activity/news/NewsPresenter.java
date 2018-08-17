@@ -1,12 +1,30 @@
 package artemshumidub.ru.sebbianews.ui.activity.news;
 
-import artemshumidub.ru.sebbianews.ui.activity.newslist.INewsListContract;
+import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.data.entity.FullNews;
+import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
+import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
+import artemshumidub.ru.sebbianews.data.remote.response.NewsResponse;
+import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
-public class NewsPresenter implements INewsListContract.IPresenter {
+public class NewsPresenter implements INewsContract.IPresenter {
+
+    private INewsContract.IView view;
+    private RemoteRepository remoteRepository;
+    private FullNews news;
+
+    NewsPresenter(INewsContract.IView view){
+        attachView(view);
+    }
 
     @Override
     public void attachView(INewsContract.IView view) {
-
+        this.view = view;
     }
 
     @Override
@@ -34,4 +52,49 @@ public class NewsPresenter implements INewsListContract.IPresenter {
 
     }
 
+    @Override
+    public void getNews(long idNews) {
+        view.startProgress();
+        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        else {
+
+            if (remoteRepository == null) {
+                remoteRepository = new RemoteRepository((NewsActivity) view);
+            }
+
+            Observable<NewsResponse> observable = remoteRepository.getNews(idNews);
+            observable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<NewsResponse>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
+
+                        @Override
+                        public void onNext(NewsResponse response) {
+                            view.stopProgress();
+
+                            if (response.getNews() != null
+                                    && response.getNews().getTitle() != null
+                                    && response.getNews().getFullDescription() != null){
+                                view.setNews(response.getNews());
+                            } else view.showEmptyContentMessage();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e instanceof ServerErrorException) {
+                                view.showServerError();
+                            } else if (e instanceof NoInternetException) {
+                                view.showInternetError();
+                            }
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            view.stopProgress();
+                        }
+                    });
+        }
+    }
 }
