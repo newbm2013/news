@@ -1,26 +1,35 @@
 package artemshumidub.ru.sebbianews.data.entity;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class ShortNews {
 
     @SerializedName("id")
-    private int id;
+    private long id;
 
     @SerializedName("title")
     private String title;
 
     @SerializedName("date")
-      private String date;
+    private String date;
 
     @SerializedName("shortDescription")
     private String shortDescription;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -33,7 +42,13 @@ public class ShortNews {
     }
 
     public String getDate() {
-        return date;
+        try {
+            @SuppressLint("SimpleDateFormat")
+            Date d = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS").parse(date);
+            return new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.getDefault()).format(d);
+        } catch (Exception e){
+            return date;
+        }
     }
 
     public void setDate(String date) {

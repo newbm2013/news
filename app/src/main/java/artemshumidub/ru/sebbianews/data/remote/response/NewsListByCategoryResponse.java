@@ -9,16 +9,16 @@ import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 public class NewsListByCategoryResponse {
 
     @SerializedName("code")
-    private Long code;
+    private int code;
 
     @SerializedName("list")
     private List<ShortNews> list;
 
-    public Long getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(int code) {
         this.code = code;
     }
 

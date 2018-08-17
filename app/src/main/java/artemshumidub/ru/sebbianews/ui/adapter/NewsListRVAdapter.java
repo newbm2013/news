@@ -36,8 +36,9 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         holder.tvHead.setText(list.get(position).getTitle());
+        holder.tvDate.setText(list.get(position).getDate());
         holder.tvShortDesc.setText(list.get(position).getShortDescription());
-        int idNews = list.get(position).getId();
+        long idNews = list.get(position).getId();
         holder.llNewsItem.setOnClickListener((v)->onItemlistener.onItemClick(idNews));
     }
 
@@ -54,6 +55,9 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         @BindView(R.id.tv_head)
         TextView tvHead;
 
+        @BindView(R.id.tv_date)
+        TextView tvDate;
+
         @BindView(R.id.tv_short_desc)
         TextView tvShortDesc;
 
@@ -67,8 +71,8 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         this.onItemlistener = onItemlistener;
     }
 
-    interface OnItemListener{
-        void onItemClick(int id);
+    public interface OnItemListener{
+        void onItemClick(long id);
     }
 
 }
