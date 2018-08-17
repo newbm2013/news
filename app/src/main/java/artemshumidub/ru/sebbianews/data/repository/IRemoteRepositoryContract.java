@@ -9,7 +9,7 @@ import io.reactivex.Observable;
 public interface IRemoteRepositoryContract  {
 
     Observable<CategoryResponse> getCategory();
-    Observable<NewsListByCategoryResponse> getNewsList(int categoryId, int page);
-    Observable<NewsResponse> getNews(int ibNews);
+    Observable<NewsListByCategoryResponse> getNewsList(long categoryId, int page);
+    Observable<NewsResponse> getNews(long ibNews);
 
 }

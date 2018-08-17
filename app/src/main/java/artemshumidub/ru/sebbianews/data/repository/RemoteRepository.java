@@ -24,12 +24,12 @@ public class RemoteRepository implements IRemoteRepositoryContract {
     }
 
     @Override
-    public Observable<NewsListByCategoryResponse> getNewsList(int categoryId, int page) {
+    public Observable<NewsListByCategoryResponse> getNewsList(long categoryId, int page) {
         return newsApiClient.getNewsList(categoryId, page);
     }
 
     @Override
-    public Observable<NewsResponse> getNews(int idNews) {
+    public Observable<NewsResponse> getNews(long idNews) {
         return newsApiClient.getNews(idNews);
     }
 
