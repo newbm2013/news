@@ -43,7 +43,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
 
     private NewsListPresenter presenter;
 
-    private int idCategory;
+    private long idCategory;
     private int page;
     private static final int NEWS_PER_PAGE = 10;
 
@@ -53,7 +53,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this);
 
-        idCategory = getIntent().getExtras().getInt(CategoriesActivity.ID_CATEGORY_KEY);
+        idCategory = getIntent().getExtras().getLong(CategoriesActivity.ID_CATEGORY_KEY);
         page=0;
 
         getSupportActionBar().setTitle("Список новостей");
