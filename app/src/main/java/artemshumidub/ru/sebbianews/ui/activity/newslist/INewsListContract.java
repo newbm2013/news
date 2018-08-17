@@ -4,14 +4,15 @@ import java.util.List;
 
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.ui.activity.base.BasePresenter;
+import artemshumidub.ru.sebbianews.ui.activity.base.IProgressViewContract;
 import artemshumidub.ru.sebbianews.ui.activity.base.IViewContract;
 
 public interface INewsListContract  {
-    interface IView extends IViewContract{
+    interface IView extends IProgressViewContract, IViewContract {
 
         void setNewsList(List<ShortNews> list);
 
-        void goToNews(int idNews);
+        void goToNews(long idNews);
 
         void setPage(int page);
 
@@ -20,6 +21,6 @@ public interface INewsListContract  {
     }
 
     interface IPresenter extends BasePresenter<INewsListContract.IView> {
-        void getNewsList(int idCategory, int page);
+        void getNewsList(long idCategory, int page);
     }
 }

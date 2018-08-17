@@ -57,7 +57,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     }
 
     @Override
-    public void getNewsList(int idCategory, int page) {
+    public void getNewsList(long idCategory, int page) {
         view.startProgress();
         if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {

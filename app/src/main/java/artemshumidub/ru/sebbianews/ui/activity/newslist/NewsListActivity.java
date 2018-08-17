@@ -129,7 +129,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     }
 
     @Override
-    public void goToNews(int idNews) {
+    public void goToNews(long idNews) {
         Intent intent = new Intent(this, NewsActivity.class);
         intent.putExtra(NewsActivity.ID_NEWS_KEY, idNews);
         startActivity(intent);
