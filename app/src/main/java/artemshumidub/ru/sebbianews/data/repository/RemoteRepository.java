@@ -2,7 +2,6 @@ package artemshumidub.ru.sebbianews.data.repository;
 
 import android.content.Context;
 
-import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.remote.RetrofitHelper;
 import artemshumidub.ru.sebbianews.data.remote.api.NewsApi;
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
