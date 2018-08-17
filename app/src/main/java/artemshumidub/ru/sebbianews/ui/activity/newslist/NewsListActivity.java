@@ -42,10 +42,11 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     FrameLayout serverErrorLayout;
 
     private NewsListPresenter presenter;
+    NewsListRVAdapter adapter;
 
-    private int idCategory;
+    private long idCategory;
     private int page;
-    private static final int NEWS_PER_PAGE = 10;
+    public static final int NEWS_PER_PAGE = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +54,21 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this);
 
-        idCategory = getIntent().getExtras().getInt(CategoriesActivity.ID_CATEGORY_KEY);
+        idCategory = getIntent().getExtras().getLong(CategoriesActivity.ID_CATEGORY_KEY);
         page=0;
 
         getSupportActionBar().setTitle("Список новостей");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         presenter = new NewsListPresenter(this);
-        presenter.getNewsList(idCategory, page);
+        presenter.getFirstPageOfNewsList(idCategory);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            presenter.getNewsList(idCategory, page);
+            presenter.getFirstPageOfNewsList(idCategory);
         });
     }
 
@@ -119,12 +121,24 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
 
     @Override
     public void setNewsList(List<ShortNews> list) {
-        NewsListRVAdapter adapter = new NewsListRVAdapter(this, list);
-        adapter.setOnItemlistener(this::goToNews);
+        adapter = new NewsListRVAdapter(this, list);
+        adapter.setOnItemListener(this::goToNews);
+        adapter.setOnLastPosition((List<ShortNews> oldList)->{
+            presenter.getNextPageOfNewsList(idCategory, page);
+        });
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
-            recyclerView.scrollToPosition(page*NEWS_PER_PAGE);
+        }
+    }
+
+    public void addNewsList(List<ShortNews> list) {
+       for (ShortNews news: list){
+           if (!adapter.getList().contains(news)) adapter.getList().add(news);
+       }
+       adapter.notifyDataSetChanged();
+       if (recyclerView!=null) {
+           recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -147,5 +161,12 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home) this.finish();
         return true;
+    }
+
+    public void setNewsListGetting(boolean newsListGetting) {
+        if (recyclerView.getAdapter()!=null){
+            ((NewsListRVAdapter)recyclerView.getAdapter())
+                    .setLastPositionCallbackEnable(newsListGetting);
+        }
     }
 }

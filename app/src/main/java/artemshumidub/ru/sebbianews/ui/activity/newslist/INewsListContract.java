@@ -12,6 +12,8 @@ public interface INewsListContract  {
 
         void setNewsList(List<ShortNews> list);
 
+        void addNewsList(List<ShortNews> list);
+
         void goToNews(long idNews);
 
         void setPage(int page);
@@ -21,6 +23,7 @@ public interface INewsListContract  {
     }
 
     interface IPresenter extends BasePresenter<INewsListContract.IView> {
-        void getNewsList(long idCategory, int page);
+        void getFirstPageOfNewsList(long idCategory);
+        void getNextPageOfNewsList(long idCategory, int page);
     }
 }
