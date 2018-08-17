@@ -122,7 +122,7 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     }
 
     @Override
-    public void goToNewsList(int idCategory) {
+    public void goToNewsList(long idCategory) {
         Intent intent = new Intent(this, NewsListActivity.class);
         intent.putExtra(ID_CATEGORY_KEY, idCategory);
         startActivity(intent);
