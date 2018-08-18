@@ -1,6 +1,11 @@
 package artemshumidub.ru.sebbianews.ui.activity.news;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
@@ -38,8 +43,16 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     @BindView(R.id.server_error_layout)
     FrameLayout serverErrorLayout;
 
-    private NewsPresenter presenter;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout appBarLayout;
+
+    @BindView(R.id.collapsing_toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
+    private NewsPresenter presenter;
 
     public static final String ID_NEWS_KEY = "idNews";
     long idNews;
@@ -55,9 +68,10 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
         presenter= new NewsPresenter(this);
         presenter.getNews(idNews);
 
-        getSupportActionBar().setTitle("Новость");
+        setSupportActionBar(toolbar);
+        setAppBarLayoutExpandable(false);
+        collapsingToolbarLayout.setTitle("Новость");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override
@@ -66,13 +80,30 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
         return true;
     }
 
+    public void setAppBarLayoutExpandable(boolean isExpandable) {
+        if (!isExpandable) {
+            appBarLayout.setExpanded(false, false);
+            appBarLayout.setActivated(false);
+            CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+            lp.height = (int) getResources().getDimension(R.dimen.app_bar_collapsed_weight);
+        } else {
+            appBarLayout.setExpanded(true, false);
+            appBarLayout.setActivated(true);
+            CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+            lp.height = (int) getResources().getDimension(R.dimen.app_bar_expanded_weight);
+        }
+    }
+
     @Override
     public void setNews(FullNews news) {
+        setAppBarLayoutExpandable(true);
         contentView.setVisibility(View.VISIBLE);
         tvFullNews.setText(Html.fromHtml(news.getFullDescription()));
         tvFullNews.setMovementMethod(LinkMovementMethod.getInstance());
         tvDate.setText(news.getDate());
-        getSupportActionBar().setTitle(news.getTitle());
+        collapsingToolbarLayout.setTitle(news.getTitle());
     }
 
     @Override

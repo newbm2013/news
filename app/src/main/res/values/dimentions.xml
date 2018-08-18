@@ -5,4 +5,6 @@
     <dimen name="text_head_size">20sp</dimen>
     <dimen name="standard_padding_size">24dp</dimen>
     <dimen name="small_padding_size">12dp</dimen>
+    <dimen name="app_bar_expanded_weight">255dp</dimen>
+    <dimen name="app_bar_collapsed_weight">56dp</dimen>
 </resources>
