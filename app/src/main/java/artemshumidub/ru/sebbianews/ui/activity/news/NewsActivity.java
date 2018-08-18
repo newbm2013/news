@@ -42,6 +42,9 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     @BindView(R.id.server_error_layout)
     FrameLayout serverErrorLayout;
 
+    @BindView(R.id.unknoun_error_layout)
+    FrameLayout unknownErrorLayout;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -91,6 +94,12 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     }
 
     @Override
+    public void showUnknownError() {
+        clearScreen();
+        unknownErrorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showEmptyContentMessage() {
         clearScreen();
         emptyContentLayout.setVisibility(View.VISIBLE);
@@ -102,6 +111,7 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
         emptyContentLayout.setVisibility(View.INVISIBLE);
         internetErrorLayout.setVisibility(View.INVISIBLE);
         serverErrorLayout.setVisibility(View.INVISIBLE);
+        unknownErrorLayout.setVisibility(View.INVISIBLE);
         stopProgress();
     }
 

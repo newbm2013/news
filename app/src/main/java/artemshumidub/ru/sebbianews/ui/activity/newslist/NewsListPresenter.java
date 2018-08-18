@@ -1,9 +1,12 @@
 package artemshumidub.ru.sebbianews.ui.activity.newslist;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.R;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
@@ -17,12 +20,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsListPresenter implements INewsListContract.IPresenter  {
 
+    private static final String ALL_NEWS_GOT = "Все новости загружены";
     private INewsListContract.IView view;
     private RemoteRepository remoteRepository;
     private List<ShortNews> list;
     private boolean isLatsNewsGot = false;
+    private Context context;
 
     NewsListPresenter(INewsListContract.IView view){
+        context = (NewsListActivity)view;
         attachView(view);
         list = new ArrayList<>();
     }
@@ -33,35 +39,24 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     }
 
     @Override
-    public void detachView() {
-
-    }
+    public void detachView() {   }
 
     @Override
-    public void onStart() {
-
-    }
+    public void onStart() {    }
 
     @Override
-    public void onStop() {
-
-    }
+    public void onStop() {   }
 
     @Override
-    public void onResume() {
-
-    }
+    public void onResume() {   }
 
     @Override
-    public void onPause() {
-
-    }
-
+    public void onPause() {   }
 
     @Override
     public void getFirstPageOfNewsList(long idCategory) {
         view.startProgress();
-        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
             view.showInternetError();
             return;
         }
@@ -79,10 +74,10 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                     public void onNext(NewsListByCategoryResponse response) {
                         view.stopProgress();
                         isLatsNewsGot = response.getList().size() < NewsListActivity.NEWS_PER_PAGE;
+                        if (isLatsNewsGot) view.showMessage(ALL_NEWS_GOT);
                         view.setPage(0);
                         list.clear();
                         list.addAll(response.getList());
-
                         if (response.getList().size()>=NewsListActivity.NEWS_PER_PAGE){
                             view.setPage(view.getPage()+1);
                         }
@@ -97,7 +92,9 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                             view.showServerError();
                         } else if (e instanceof NoInternetException) {
                             view.showInternetError();
-                        }
+                        } else {
+                        view.showUnknownError();
+                    }
                         ((NewsListActivity) view).setNewsListGetting(false);
                     }
 
@@ -107,24 +104,18 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                         ((NewsListActivity) view).setNewsListGetting(false);
                     }
                 });
-
-
     }
 
     @Override
     public void getNextPageOfNewsList(long idCategory, int page) {
-
-        //if enable show no internet screen without content
-//        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()){
-//            view.showInternetError();
-//            return;
-//        }
-
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
+            view.showMessage(context.getResources().getString(R.string.internet_error));
+            return;
+        }
         if (isLatsNewsGot) return;
         if (remoteRepository == null) {
             remoteRepository = new RemoteRepository((NewsListActivity) view);
         }
-
         Observable<NewsListByCategoryResponse> observable = remoteRepository.getNewsList(idCategory, page);
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -137,6 +128,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
                         if (response.getList().size() < NewsListActivity.NEWS_PER_PAGE){
                             isLatsNewsGot = true;
+                            view.showMessage(ALL_NEWS_GOT);
                         }
 
                         if (page == 0) {
@@ -151,18 +143,21 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
                         if (list.isEmpty()) view.showEmptyContentMessage();
                         else view.addNewsList(list);
+                        //todo set plural
+//                        view.showMessage("Добавлено новостей: " +  list.size());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         view.setPage(0);
                         if (e instanceof ServerErrorException) {
-                            //todo show toast
-//                            view.showServerError();
+                            //todo dagger + app context + delete casting view
+                            view.showMessage(context.getResources().getString(R.string.server_error));
                         } else if (e instanceof NoInternetException) {
-                            //todo show toast
-//                            view.showInternetError();
-                        }
+                           view.showMessage(context.getResources().getString(R.string.internet_error));
+                        } else {
+                            view.showMessage(context.getResources().getString(R.string.unknown_error));
+                    }
                         ((NewsListActivity) view).setNewsListGetting(false);
                     }
 

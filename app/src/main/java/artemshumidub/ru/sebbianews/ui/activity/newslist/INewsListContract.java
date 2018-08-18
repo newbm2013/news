@@ -20,6 +20,8 @@ public interface INewsListContract  {
 
         int getPage();
 
+        void showMessage(String message);
+
     }
 
     interface IPresenter extends BasePresenter<INewsListContract.IView> {

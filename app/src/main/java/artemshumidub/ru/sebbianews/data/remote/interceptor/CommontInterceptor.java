@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.exception.UnknownException;
@@ -21,7 +21,7 @@ public class CommontInterceptor implements Interceptor {
             Response originalResponse = chain.proceed(originalRequest);
             if (originalResponse != null && originalResponse.isSuccessful()) return originalResponse;
             else {
-                if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) {
+                if (!NewsApp.getConnectionUtil().checkInternetConnection()) {
                     throw new NoInternetException();
                 } else if (originalResponse != null
                         && originalResponse.code() >= 500

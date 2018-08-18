@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "artemshumidub.ru.sebbianews"
         minSdkVersion 22
+        //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -18,6 +19,18 @@ android {
         }
         debug{
             buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
+        }
+    }
+    sourceSets {
+        main {
+            res {
+                srcDirs = [
+                        'src/main/res',
+                        'src/main/res/news',
+                        'src/main/res/newslist',
+                        'src/main/res/category',
+                        'src/main/res/emptystate']
+            }
         }
     }
     compileOptions {

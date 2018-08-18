@@ -81,21 +81,28 @@
                     app:layout_constraintTop_toBottomOf="parent"
                     app:layout_constraintBottom_toTopOf="parent" />
 
-                <include layout="@layout/textview_empty_content"
+                <include layout="@layout/empty_content_layout"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="parent"
                     app:layout_constraintBottom_toTopOf="parent"/>
 
-                <include layout="@layout/textview_internet_error"
+                <include layout="@layout/internet_error_layout"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="parent"
                     app:layout_constraintBottom_toTopOf="parent"/>
 
-                <include layout="@layout/textview_server_error"
+                <include layout="@layout/server_error_layout"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="parent"/>
+
+                <include layout="@layout/unknown_error_layout"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

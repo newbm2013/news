@@ -19,6 +19,11 @@ public interface IViewContract {
     void showServerError();
 
     /**
+     * Остальные ошибки
+     */
+    void showUnknownError();
+
+    /**
      * Нет контента
      */
     void showEmptyContentMessage();
