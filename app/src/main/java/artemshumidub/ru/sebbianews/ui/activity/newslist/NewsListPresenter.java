@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import artemshumidub.ru.sebbianews.R;
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
@@ -56,7 +56,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     @Override
     public void getFirstPageOfNewsList(long idCategory) {
         view.startProgress();
-        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
             view.showInternetError();
             return;
         }
@@ -108,7 +108,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
     @Override
     public void getNextPageOfNewsList(long idCategory, int page) {
-        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
             view.showMessage(context.getResources().getString(R.string.internet_error));
             return;
         }

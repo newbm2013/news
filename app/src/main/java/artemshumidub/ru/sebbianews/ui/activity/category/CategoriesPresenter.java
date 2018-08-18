@@ -1,8 +1,6 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
-import java.net.UnknownHostException;
-
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.exception.UnknownException;
@@ -53,7 +51,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
     @Override
     public void getCategories() {
         view.startProgress();
-        if(!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        if(!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
             if (remoteRepository == null){
                 remoteRepository = new RemoteRepository((CategoriesActivity) view);

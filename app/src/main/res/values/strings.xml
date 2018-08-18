@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sebbia News</string>
+    <string name="app_name">News</string>
     <string name="empty_content">В настоящий момент нет новостей.</string>
     <string name="on_progress">Информация загружается</string>
     <string name="internet_error">Что-то пошло не так… Пожалуйста, проверьте подключение к интернету.</string>

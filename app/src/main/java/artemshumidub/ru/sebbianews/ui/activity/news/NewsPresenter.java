@@ -1,6 +1,6 @@
 package artemshumidub.ru.sebbianews.ui.activity.news;
 
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.FullNews;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
@@ -45,7 +45,7 @@ public class NewsPresenter implements INewsContract.IPresenter {
     @Override
     public void getNews(long idNews) {
         view.startProgress();
-        if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
             if (remoteRepository == null) {
                 remoteRepository = new RemoteRepository((NewsActivity) view);
