@@ -1,9 +1,10 @@
 package artemshumidub.ru.sebbianews.ui.activity.newslist;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,7 +66,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
 
         if (getSupportActionBar()!= null){
             ActionBar actionBar;
-            actionBar = getActionBar();
+            actionBar = getSupportActionBar();
             actionBar.setTitle(TITLE_TEXT);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
