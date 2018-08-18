@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="text_small_size">12sp</dimen>
-    <dimen name="text_body_size">18sp</dimen>
-    <dimen name="text_head_size">20sp</dimen>
+    <dimen name="text_body_size">14sp</dimen>
+    <dimen name="text_head_size">18sp</dimen>
+    <dimen name="toolbar_title_full_text_left_padding">24dp</dimen>
     <dimen name="standard_padding_size">24dp</dimen>
+    <dimen name="medium_padding_size">18dp</dimen>
     <dimen name="small_padding_size">12dp</dimen>
-    <dimen name="app_bar_expanded_weight">255dp</dimen>
+    <dimen name="app_bar_expanded_weight">156dp</dimen>
     <dimen name="app_bar_collapsed_weight">56dp</dimen>
 </resources>
