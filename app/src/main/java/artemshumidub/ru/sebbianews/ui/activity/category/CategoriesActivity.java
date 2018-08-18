@@ -39,28 +39,25 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     @BindView(R.id.server_error_layout)
     FrameLayout serverErrorLayout;
 
-    private CategoriesPresenter presenter;
+    @BindView(R.id.unknoun_error_layout)
+    FrameLayout unknownErrorLayout;
 
     public static final String ID_CATEGORY_KEY = "idCategory";
+    private CategoriesPresenter presenter;
+    private final static String title_text = "Список категорий";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
-
-        getSupportActionBar().setTitle("Список категорий");
-
+        if (getSupportActionBar()!=null) getSupportActionBar().setTitle(title_text);
         presenter = new CategoriesPresenter(this);
         presenter.getCategories();
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-
-
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            presenter.getCategories();
-        });
+        swipeRefreshLayout.setOnRefreshListener(() ->
+            presenter.getCategories());
     }
 
     @Override
@@ -76,6 +73,12 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     }
 
     @Override
+    public void showUnknownError() {
+        clearScreen();
+        unknownErrorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showEmptyContentMessage() {
         clearScreen();
         emptyContentLayout.setVisibility(View.VISIBLE);
@@ -87,6 +90,7 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         emptyContentLayout.setVisibility(View.INVISIBLE);
         internetErrorLayout.setVisibility(View.INVISIBLE);
         serverErrorLayout.setVisibility(View.INVISIBLE);
+        unknownErrorLayout.setVisibility(View.INVISIBLE);
         stopProgress();
     }
 

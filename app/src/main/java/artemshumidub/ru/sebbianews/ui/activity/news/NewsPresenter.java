@@ -28,40 +28,28 @@ public class NewsPresenter implements INewsContract.IPresenter {
     }
 
     @Override
-    public void detachView() {
-
-    }
+    public void detachView() {  }
 
     @Override
-    public void onStart() {
-
-    }
+    public void onStart() {  }
 
     @Override
-    public void onStop() {
-
-    }
+    public void onStop() {  }
 
     @Override
-    public void onResume() {
-
-    }
+    public void onResume() {   }
 
     @Override
-    public void onPause() {
-
-    }
+    public void onPause() {   }
 
     @Override
     public void getNews(long idNews) {
         view.startProgress();
         if (!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
-
             if (remoteRepository == null) {
                 remoteRepository = new RemoteRepository((NewsActivity) view);
             }
-
             Observable<NewsResponse> observable = remoteRepository.getNews(idNews);
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -73,7 +61,6 @@ public class NewsPresenter implements INewsContract.IPresenter {
                         @Override
                         public void onNext(NewsResponse response) {
                             view.stopProgress();
-
                             if (response.getNews() != null
                                     && response.getNews().getTitle() != null
                                     && response.getNews().getFullDescription() != null){
@@ -87,6 +74,8 @@ public class NewsPresenter implements INewsContract.IPresenter {
                                 view.showServerError();
                             } else if (e instanceof NoInternetException) {
                                 view.showInternetError();
+                            } else {
+                                view.showUnknownError();
                             }
                         }
 

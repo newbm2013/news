@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Sebbia News</string>
-    <string name="empty_content">В настоящий момент отсутствуют новости в выбранной категории.</string>
+    <string name="empty_content">В настоящий момент нет новостей.</string>
     <string name="on_progress">Информация загружается</string>
     <string name="internet_error">Что-то пошло не так… Пожалуйста, проверьте подключение к интернету.</string>
+    <string name="unknown_error">Что-то пошло не так… Пожалуйста, попробуйете позднее.</string>
     <string name="server_error">Сервер временно не отвечает. Пожалуйста, попробуйте позднее.</string>
 </resources>
