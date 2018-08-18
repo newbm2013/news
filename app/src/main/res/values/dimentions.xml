@@ -7,6 +7,7 @@
     <dimen name="standard_padding_size">24dp</dimen>
     <dimen name="medium_padding_size">18dp</dimen>
     <dimen name="small_padding_size">12dp</dimen>
+    <dimen name="small_progress_bar_size">56dp</dimen>
     <dimen name="app_bar_expanded_weight">156dp</dimen>
     <dimen name="app_bar_collapsed_weight">56dp</dimen>
 </resources>

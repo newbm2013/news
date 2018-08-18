@@ -116,7 +116,6 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
 
     @Override
     public void setCategories(List<Category> list) {
-        //todo change parameter List
         CategoryRVAdapter adapter = new CategoryRVAdapter(this, list);
         adapter.setOnItemListener(this::goToNewsList);
         if (recyclerView!=null) {

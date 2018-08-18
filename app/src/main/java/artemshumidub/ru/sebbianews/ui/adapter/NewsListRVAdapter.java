@@ -21,7 +21,7 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
 
     private final List<ShortNews> list;
     private OnItemListener onItemlistener;
-    private OnNearLastPosition onLastPosition;
+    private OnLastPosition onLastPosition;
     private boolean isLastPositionCallbackEnable = false;
 
     public NewsListRVAdapter(Context context, List<ShortNews> list) {
@@ -43,8 +43,8 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         holder.llNewsItem.setOnClickListener((v)->onItemlistener.onItemClick(idNews));
 
         if (!isLastPositionCallbackEnable
-                & getItemCount()-1 == position
-                & getItemCount()>=NewsListActivity.NEWS_PER_PAGE){
+                && getItemCount()-1 == position
+                && getItemCount()>=NewsListActivity.NEWS_PER_PAGE){
             isLastPositionCallbackEnable = true;
             onLastPosition.doOnCallback(list);
         }
@@ -79,7 +79,7 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         this.onItemlistener = onItemListener;
     }
 
-    public void setOnLastPosition(OnNearLastPosition onLastPosition) {
+    public void setOnLastPosition(OnLastPosition onLastPosition) {
         this.onLastPosition = onLastPosition;
     }
 
@@ -91,7 +91,7 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         void onItemClick(long id);
     }
 
-    public interface OnNearLastPosition{
+    public interface OnLastPosition {
         void doOnCallback(List<ShortNews> oldList);
     }
 

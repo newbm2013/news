@@ -12,16 +12,19 @@ public interface INewsListContract  {
 
         void setNewsList(List<ShortNews> list);
 
-        void addNewsList(List<ShortNews> list);
+        void setNextNewsList(List<ShortNews> list);
 
         void goToNews(long idNews);
 
         void setPage(int page);
 
-        int getPage();
-
         void showMessage(String message);
 
+        void hideSmallProgressBar();
+
+        void showSmallProgressBar();
+
+        int getPage();
     }
 
     interface IPresenter extends BasePresenter<INewsListContract.IView> {

@@ -1,4 +1,4 @@
-package artemshumidub.ru.sebbianews.ui.adapter;
+package artemshumidub.ru.sebbianews.ui.util;
 
 import android.support.v7.util.DiffUtil;
 

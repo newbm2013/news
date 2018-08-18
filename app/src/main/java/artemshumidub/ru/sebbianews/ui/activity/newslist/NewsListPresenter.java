@@ -108,11 +108,13 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
     @Override
     public void getNextPageOfNewsList(long idCategory, int page) {
+        if (isLatsNewsGot) return;
+        view.showSmallProgressBar();
         if (!NewsApp.getConnectionUtil().checkInternetConnection()){
             view.showMessage(context.getResources().getString(R.string.internet_error));
+            view.hideSmallProgressBar();
             return;
         }
-        if (isLatsNewsGot) return;
         if (remoteRepository == null) {
             remoteRepository = new RemoteRepository((NewsListActivity) view);
         }
@@ -125,26 +127,20 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
                     @Override
                     public void onNext(NewsListByCategoryResponse response) {
-
                         if (response.getList().size() < NewsListActivity.NEWS_PER_PAGE){
                             isLatsNewsGot = true;
                             view.showMessage(ALL_NEWS_GOT);
                         }
-
                         if (page == 0) {
                             list.clear();
                         }
-
                         list.addAll(response.getList());
-
                         if (response.getList().size()>=NewsListActivity.NEWS_PER_PAGE){
                             view.setPage(view.getPage()+1);
                         }
-
                         if (list.isEmpty()) view.showEmptyContentMessage();
-                        else view.addNewsList(list);
-                        //todo set plural
-//                        view.showMessage("Добавлено новостей: " +  list.size());
+                        else view.setNextNewsList(list);
+                        view.hideSmallProgressBar();
                     }
 
                     @Override
@@ -159,11 +155,13 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                             view.showMessage(context.getResources().getString(R.string.unknown_error));
                     }
                         ((NewsListActivity) view).setNewsListGetting(false);
+                        view.hideSmallProgressBar();
                     }
 
                     @Override
                     public void onComplete() {
                         ((NewsListActivity) view).setNewsListGetting(false);
+                        view.hideSmallProgressBar();
                     }
                 });
     }
