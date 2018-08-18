@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -32,6 +33,9 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
 
     @BindView(R.id.news_list_rv)
     RecyclerView recyclerView;
+
+    @BindView(R.id.ll_progress_bar_news_item)
+    LinearLayout smallProgressBar;
 
     @BindView(R.id.progress_layout)
     FrameLayout progressLayout;
@@ -113,6 +117,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
         serverErrorLayout.setVisibility(View.INVISIBLE);
         unknownErrorLayout.setVisibility(View.INVISIBLE);
         stopProgress();
+        hideSmallProgressBar();
     }
 
     @Override
@@ -139,15 +144,17 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     public void setNewsList(List<ShortNews> list) {
         adapter = new NewsListRVAdapter(this, list);
         adapter.setOnItemListener(this::goToNews);
-        adapter.setOnLastPosition((List<ShortNews> oldList)->
-            presenter.getNextPageOfNewsList(idCategory, page));
+        adapter.setOnLastPosition((List<ShortNews> oldList)->{
+            presenter.getNextPageOfNewsList(idCategory, page);
+        });
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
         }
+        hideSmallProgressBar();
     }
 
-    public void addNewsList(List<ShortNews> list) {
+    public void setNextNewsList(List<ShortNews> list) {
        for (ShortNews news: list){
            if (!adapter.getList().contains(news)) adapter.getList().add(news);
        }
@@ -155,6 +162,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
        if (recyclerView!=null) {
            recyclerView.setVisibility(View.VISIBLE);
         }
+       hideSmallProgressBar();
     }
 
     @Override
@@ -188,5 +196,14 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
             ((NewsListRVAdapter)recyclerView.getAdapter())
                     .setLastPositionCallbackEnable(newsListGetting);
         }
+    }
+
+    public void hideSmallProgressBar(){
+        smallProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showSmallProgressBar() {
+        smallProgressBar.setVisibility(View.VISIBLE);
     }
 }

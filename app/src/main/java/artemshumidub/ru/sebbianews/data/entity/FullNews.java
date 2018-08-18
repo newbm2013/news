@@ -47,7 +47,7 @@ public class FullNews {
         try {
             @SuppressLint("SimpleDateFormat")
             Date d = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSS").parse(date);
-            return new SimpleDateFormat("dd.MM.yyyy hh:mm", Locale.getDefault()).format(d);
+            return new SimpleDateFormat("hh:mm dd.MM.yyyy", Locale.getDefault()).format(d);
         } catch (Exception e){
             return date;
         }
