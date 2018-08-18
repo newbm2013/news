@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.news.NewsActivity"
+            android:theme="@style/NoActionBarTheme"
             android:screenOrientation="portrait">
         </activity>
         <activity android:name=".ui.activity.newslist.NewsListActivity"
