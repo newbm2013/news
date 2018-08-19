@@ -2,22 +2,20 @@ package artemshumidub.ru.sebbianews.ui.activity.category;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.FrameLayout;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import java.util.List;
-
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
 import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
 import artemshumidub.ru.sebbianews.ui.adapter.CategoryRVAdapter;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class CategoriesActivity extends BaseActivity implements ICategoriesContract.IView{
 
@@ -43,21 +41,28 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     FrameLayout unknownErrorLayout;
 
     public static final String ID_CATEGORY_KEY = "idCategory";
+    private final static String TITLE_TEXT = "Список категорий";
     private CategoriesPresenter presenter;
-    private final static String title_text = "Список категорий";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
-        if (getSupportActionBar()!=null) getSupportActionBar().setTitle(title_text);
-        presenter = new CategoriesPresenter(this);
+        presenter = new CategoriesPresenter();
+        presenter.attachView(this);
         presenter.getCategories();
+        if (getSupportActionBar()!=null) getSupportActionBar().setTitle(TITLE_TEXT);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         swipeRefreshLayout.setOnRefreshListener(() ->
             presenter.getCategories());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 
     @Override

@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 
 public class NewsListActivity extends BaseActivity implements INewsListContract.IView{
 
-    private static final String TITLE_TEXT = "Список новостей" ;
     @BindView(R.id.news_list_swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -52,12 +51,12 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     @BindView(R.id.unknoun_error_layout)
     FrameLayout unknownErrorLayout;
 
-    private NewsListPresenter presenter;
-    NewsListRVAdapter adapter;
-
     private long idCategory = 0;
     private int page = 0;
-    public static final int NEWS_PER_PAGE = 10;
+    private static final String TITLE_TEXT = "Список новостей" ;
+
+    private NewsListPresenter presenter;
+    private NewsListRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +74,8 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        presenter = new NewsListPresenter(this);
+        presenter = new NewsListPresenter();
+        presenter.attachView(this);
         presenter.getFirstPageOfNewsList(idCategory);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -84,6 +84,18 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
 
         swipeRefreshLayout.setOnRefreshListener(() ->
                 presenter.getFirstPageOfNewsList(idCategory));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) this.finish();
+        return true;
     }
 
     @Override
@@ -141,12 +153,26 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     }
 
     @Override
+    public void hideSmallProgressBar(){
+        smallProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showSmallProgressBar() {
+        smallProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void setNewsList(List<ShortNews> list) {
-        adapter = new NewsListRVAdapter(this, list);
+        adapter = new NewsListRVAdapter(list);
         adapter.setOnItemListener(this::goToNews);
-        adapter.setOnLastPosition((List<ShortNews> oldList)->{
-            presenter.getNextPageOfNewsList(idCategory, page);
-        });
+        adapter.setOnLastPosition((List<ShortNews> oldList)->
+            presenter.getNextPageOfNewsList(idCategory, page));
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
@@ -154,6 +180,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
         hideSmallProgressBar();
     }
 
+    @Override
     public void setNextNewsList(List<ShortNews> list) {
        for (ShortNews news: list){
            if (!adapter.getList().contains(news)) adapter.getList().add(news);
@@ -172,38 +199,21 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
         startActivity(intent);
     }
 
+    @Override
     public int getPage() {
         return page;
     }
 
     @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
     public void setPage(int page) {
         this.page = page;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) this.finish();
-        return true;
-    }
-
     public void setNewsListGetting(boolean newsListGetting) {
         if (recyclerView.getAdapter()!=null){
             ((NewsListRVAdapter)recyclerView.getAdapter())
                     .setLastPositionCallbackEnable(newsListGetting);
         }
-    }
-
-    public void hideSmallProgressBar(){
-        smallProgressBar.setVisibility(View.INVISIBLE);
-    }
-
-    @Override
-    public void showSmallProgressBar() {
-        smallProgressBar.setVisibility(View.VISIBLE);
     }
 }

@@ -8,14 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.util.List;
-
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
-import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListPresenter.NEWS_PER_PAGE;
 
 public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Holder> {
 
@@ -24,7 +23,7 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
     private OnLastPosition onLastPosition;
     private boolean isLastPositionCallbackEnable = false;
 
-    public NewsListRVAdapter(Context context, List<ShortNews> list) {
+    public NewsListRVAdapter(List<ShortNews> list) {
         this.list = list;
     }
 
@@ -41,10 +40,9 @@ public class NewsListRVAdapter extends RecyclerView.Adapter<NewsListRVAdapter.Ho
         holder.tvShortDesc.setText(list.get(position).getShortDescription());
         long idNews = list.get(position).getId();
         holder.llNewsItem.setOnClickListener((v)->onItemlistener.onItemClick(idNews));
-
         if (!isLastPositionCallbackEnable
                 && getItemCount()-1 == position
-                && getItemCount()>=NewsListActivity.NEWS_PER_PAGE){
+                && getItemCount()>=NEWS_PER_PAGE){
             isLastPositionCallbackEnable = true;
             onLastPosition.doOnCallback(list);
         }
