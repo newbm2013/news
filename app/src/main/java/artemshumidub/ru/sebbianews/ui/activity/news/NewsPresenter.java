@@ -16,11 +16,8 @@ public class NewsPresenter implements INewsContract.IPresenter {
 
     private INewsContract.IView view;
     private RemoteRepository remoteRepository;
-    private FullNews news;
 
-    NewsPresenter(INewsContract.IView view){
-        attachView(view);
-    }
+    NewsPresenter(){  }
 
     @Override
     public void attachView(INewsContract.IView view) {
@@ -28,7 +25,7 @@ public class NewsPresenter implements INewsContract.IPresenter {
     }
 
     @Override
-    public void detachView() {  }
+    public void detachView() { this.view=null; }
 
     @Override
     public void onStart() {  }
@@ -44,10 +41,10 @@ public class NewsPresenter implements INewsContract.IPresenter {
 
     @Override
     public void getNews(long idNews) {
-        view.startProgress();
+        view.startProgress(); //todo dagger
         if (!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
-            if (remoteRepository == null) {
+            if (remoteRepository == null) { //todo dagger
                 remoteRepository = new RemoteRepository((NewsActivity) view);
             }
             Observable<NewsResponse> observable = remoteRepository.getNews(idNews);

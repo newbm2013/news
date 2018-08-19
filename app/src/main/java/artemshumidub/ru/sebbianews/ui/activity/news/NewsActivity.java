@@ -12,12 +12,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.FullNews;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 
 public class NewsActivity extends BaseActivity implements  INewsContract.IView{
 
@@ -62,7 +62,7 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     public static final String ID_NEWS_KEY = "idNews";
     private long idNews = 0;
     private String news_title = "";
-    private String news_title_collapsed = "Новость";
+    private static final String NEWS_TITLE_COLLAPSED = "Новость";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +72,26 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
         if (getIntent().getExtras()!=null){
             idNews = getIntent().getExtras().getLong(ID_NEWS_KEY, 0);
         }
-        presenter= new NewsPresenter(this);
+        presenter = new NewsPresenter();
+        presenter.attachView(this);
         setSupportActionBar(toolbar);
         setAppBarLayoutExpandable(false);
-        collapsingToolbarLayout.setTitle(news_title_collapsed);
+        collapsingToolbarLayout.setTitle(NEWS_TITLE_COLLAPSED);
         if (getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         appBarLayout.addOnOffsetChangedListener(getOnOffsetChangedListener());
         presenter.getNews(idNews);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) this.finish();
+        return true;
     }
 
     @Override
@@ -124,12 +137,6 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     @Override
     public void stopProgress() {
         progressLayout.setVisibility(View.GONE);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home) this.finish();
-        return true;
     }
 
     @Override

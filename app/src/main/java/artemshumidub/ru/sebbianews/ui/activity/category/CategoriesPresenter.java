@@ -17,9 +17,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
     private ICategoriesContract.IView view;
     private RemoteRepository remoteRepository;
 
-    CategoriesPresenter(ICategoriesContract.IView view){
-        attachView(view);
-    }
+    CategoriesPresenter(){ }
 
     @Override
     public void attachView(ICategoriesContract.IView view) {
@@ -50,10 +48,10 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     @Override
     public void getCategories() {
-        view.startProgress();
+        view.startProgress();  //todo dagger
         if(!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
-            if (remoteRepository == null){
+            if (remoteRepository == null){ //todo dagger
                 remoteRepository = new RemoteRepository((CategoriesActivity) view);
             }
             Observable<CategoryResponse> observable = remoteRepository.getCategory();

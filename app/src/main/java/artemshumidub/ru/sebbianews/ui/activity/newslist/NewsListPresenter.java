@@ -4,7 +4,6 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
@@ -20,6 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsListPresenter implements INewsListContract.IPresenter  {
 
+    public static final int NEWS_PER_PAGE = 10;
     private static final String ALL_NEWS_GOT = "Все новости загружены";
     private INewsListContract.IView view;
     private RemoteRepository remoteRepository;
@@ -27,19 +27,19 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     private boolean isLatsNewsGot = false;
     private Context context;
 
-    NewsListPresenter(INewsListContract.IView view){
-        context = (NewsListActivity)view;
-        attachView(view);
+    NewsListPresenter(){
         list = new ArrayList<>();
     }
 
     @Override
     public void attachView(INewsListContract.IView view) {
+        //todo dagger
+        context = (NewsListActivity)view;
         this.view = view;
     }
 
     @Override
-    public void detachView() {   }
+    public void detachView() { this.view=null;   }
 
     @Override
     public void onStart() {    }
@@ -73,12 +73,12 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                     @Override
                     public void onNext(NewsListByCategoryResponse response) {
                         view.stopProgress();
-                        isLatsNewsGot = response.getList().size() < NewsListActivity.NEWS_PER_PAGE;
+                        isLatsNewsGot = response.getList().size() < NEWS_PER_PAGE;
                         if (isLatsNewsGot) view.showMessage(ALL_NEWS_GOT);
                         view.setPage(0);
                         list.clear();
                         list.addAll(response.getList());
-                        if (response.getList().size()>=NewsListActivity.NEWS_PER_PAGE){
+                        if (response.getList().size()>=NEWS_PER_PAGE){
                             view.setPage(view.getPage()+1);
                         }
                         if (list.isEmpty()) view.showEmptyContentMessage();
@@ -95,13 +95,13 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                         } else {
                         view.showUnknownError();
                     }
-                        ((NewsListActivity) view).setNewsListGetting(false);
+                        view.setNewsListGetting(false);
                     }
 
                     @Override
                     public void onComplete() {
                         view.stopProgress();
-                        ((NewsListActivity) view).setNewsListGetting(false);
+                        view.setNewsListGetting(false);
                     }
                 });
     }
@@ -110,7 +110,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     public void getNextPageOfNewsList(long idCategory, int page) {
         if (isLatsNewsGot) return;
         view.showSmallProgressBar();
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!NewsApp.getConnectionUtil().checkInternetConnection()){ //todo dagger
             view.showMessage(context.getResources().getString(R.string.internet_error));
             view.hideSmallProgressBar();
             return;
@@ -127,7 +127,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
 
                     @Override
                     public void onNext(NewsListByCategoryResponse response) {
-                        if (response.getList().size() < NewsListActivity.NEWS_PER_PAGE){
+                        if (response.getList().size() < NEWS_PER_PAGE){
                             isLatsNewsGot = true;
                             view.showMessage(ALL_NEWS_GOT);
                         }
@@ -135,7 +135,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                             list.clear();
                         }
                         list.addAll(response.getList());
-                        if (response.getList().size()>=NewsListActivity.NEWS_PER_PAGE){
+                        if (response.getList().size()>=NEWS_PER_PAGE){
                             view.setPage(view.getPage()+1);
                         }
                         if (list.isEmpty()) view.showEmptyContentMessage();
@@ -147,22 +147,23 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                     public void onError(Throwable e) {
                         view.setPage(0);
                         if (e instanceof ServerErrorException) {
-                            //todo dagger + app context + delete casting view
+                            //todo dagger + app context
                             view.showMessage(context.getResources().getString(R.string.server_error));
                         } else if (e instanceof NoInternetException) {
                            view.showMessage(context.getResources().getString(R.string.internet_error));
                         } else {
                             view.showMessage(context.getResources().getString(R.string.unknown_error));
                     }
-                        ((NewsListActivity) view).setNewsListGetting(false);
                         view.hideSmallProgressBar();
+                        view.setNewsListGetting(false);
                     }
 
                     @Override
                     public void onComplete() {
-                        ((NewsListActivity) view).setNewsListGetting(false);
                         view.hideSmallProgressBar();
+                        view.setNewsListGetting(false);
                     }
                 });
     }
 }
+

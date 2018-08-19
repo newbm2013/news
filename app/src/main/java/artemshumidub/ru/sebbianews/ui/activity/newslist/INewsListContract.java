@@ -16,13 +16,15 @@ public interface INewsListContract  {
 
         void goToNews(long idNews);
 
-        void setPage(int page);
-
         void showMessage(String message);
+
+        void setNewsListGetting(boolean newsListGetting);
 
         void hideSmallProgressBar();
 
         void showSmallProgressBar();
+
+        void setPage(int page);
 
         int getPage();
     }
