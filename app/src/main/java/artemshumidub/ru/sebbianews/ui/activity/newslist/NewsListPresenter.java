@@ -74,10 +74,10 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                     public void onNext(NewsListByCategoryResponse response) {
                         view.stopProgress();
                         isLatsNewsGot = response.getList().size() < NEWS_PER_PAGE;
-                        if (isLatsNewsGot) view.showMessage(ALL_NEWS_GOT);
                         view.setPage(0);
                         list.clear();
                         list.addAll(response.getList());
+                        if (isLatsNewsGot && !list.isEmpty()) view.showMessage(ALL_NEWS_GOT);
                         if (response.getList().size()>=NEWS_PER_PAGE){
                             view.setPage(view.getPage()+1);
                         }
