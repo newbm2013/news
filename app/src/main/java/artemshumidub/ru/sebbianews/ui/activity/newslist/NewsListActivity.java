@@ -174,7 +174,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     @Override
     public void setNewsList(List<ShortNews> list) {
         adapter = new NewsListRVAdapter(list);
-        adapter.setOnItemListener(this::goToNews);
+        adapter.setOnItemListener(presenter::goToNews);
         adapter.setOnLastPosition((List<ShortNews> oldList)->
             presenter.getNextPageOfNewsList(idCategory, page));
         if (recyclerView!=null) {

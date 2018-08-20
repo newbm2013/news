@@ -7,6 +7,10 @@ import artemshumidub.ru.sebbianews.ui.activity.news.NewsActivity;
 import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
 import dagger.Component;
 
+/**
+* Component : Activity
+*
+*/
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {

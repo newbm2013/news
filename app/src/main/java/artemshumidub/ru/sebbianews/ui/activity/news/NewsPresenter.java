@@ -1,7 +1,7 @@
 package artemshumidub.ru.sebbianews.ui.activity.news;
 
+import android.content.Context;
 import javax.inject.Inject;
-
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.remote.response.NewsResponse;
@@ -18,10 +18,12 @@ public class NewsPresenter implements INewsContract.IPresenter {
     private INewsContract.IView view;
     private RemoteRepository remoteRepository;
 
+    private Context appContext;
     ConnectionUtil connectionUtil;
 
     @Inject
-    public NewsPresenter(ConnectionUtil connectionUtil){
+    public NewsPresenter(Context appContext, ConnectionUtil connectionUtil){
+        this.appContext = appContext;
         this.connectionUtil = connectionUtil;
     }
 
@@ -50,8 +52,8 @@ public class NewsPresenter implements INewsContract.IPresenter {
         view.startProgress();
         if (!connectionUtil.checkInternetConnection()) view.showInternetError();
         else {
-            if (remoteRepository == null) { //todo dagger
-                remoteRepository = new RemoteRepository((NewsActivity) view);
+            if (remoteRepository == null) {
+                remoteRepository = new RemoteRepository(appContext);
             }
             Observable<NewsResponse> observable = remoteRepository.getNews(idNews);
             observable.subscribeOn(Schedulers.io())

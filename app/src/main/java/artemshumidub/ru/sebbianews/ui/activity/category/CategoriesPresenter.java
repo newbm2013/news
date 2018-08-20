@@ -1,7 +1,7 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
+import android.content.Context;
 import javax.inject.Inject;
-
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.exception.UnknownException;
@@ -19,9 +19,11 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
     private ICategoriesContract.IView view;
     private RemoteRepository remoteRepository;
     private ConnectionUtil connectionUtil;
+    private Context appContext;
 
     @Inject
-    public CategoriesPresenter(ConnectionUtil connectionUtil){
+    public CategoriesPresenter(Context appContext, ConnectionUtil connectionUtil){
+        this.appContext = appContext;
         this.connectionUtil = connectionUtil;
     }
 
@@ -57,8 +59,8 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
         view.startProgress();
         if(!connectionUtil.checkInternetConnection()) view.showInternetError();
         else {
-            if (remoteRepository == null){ //todo dagger
-                remoteRepository = new RemoteRepository((CategoriesActivity) view);
+            if (remoteRepository == null){
+                remoteRepository = new RemoteRepository(appContext);
             }
             Observable<CategoryResponse> observable = remoteRepository.getCategory();
             observable.subscribeOn(Schedulers.io())
