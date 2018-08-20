@@ -4,13 +4,16 @@ import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import artemshumidub.ru.sebbianews.R;
-import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.remote.response.NewsListByCategoryResponse;
 import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import artemshumidub.ru.sebbianews.data.util.ConnectionUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,8 +29,11 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     private List<ShortNews> list;
     private boolean isLatsNewsGot = false;
     private Context context;
+    ConnectionUtil connectionUtil;
 
-    NewsListPresenter(){
+    @Inject
+    public NewsListPresenter(ConnectionUtil connectionUtil){
+        this.connectionUtil = connectionUtil;
         list = new ArrayList<>();
     }
 
@@ -56,7 +62,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     @Override
     public void getFirstPageOfNewsList(long idCategory) {
         view.startProgress();
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!connectionUtil.checkInternetConnection()){
             view.showInternetError();
             return;
         }
@@ -110,7 +116,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     public void getNextPageOfNewsList(long idCategory, int page) {
         if (isLatsNewsGot) return;
         view.showSmallProgressBar();
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()){ //todo dagger
+        if (!connectionUtil.checkInternetConnection()){
             view.showMessage(context.getResources().getString(R.string.internet_error));
             view.hideSmallProgressBar();
             return;

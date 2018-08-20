@@ -1,11 +1,12 @@
 package artemshumidub.ru.sebbianews.ui.activity.news;
 
-import artemshumidub.ru.sebbianews.NewsApp;
-import artemshumidub.ru.sebbianews.data.entity.FullNews;
+import javax.inject.Inject;
+
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.remote.response.NewsResponse;
 import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import artemshumidub.ru.sebbianews.data.util.ConnectionUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,7 +18,12 @@ public class NewsPresenter implements INewsContract.IPresenter {
     private INewsContract.IView view;
     private RemoteRepository remoteRepository;
 
-    NewsPresenter(){  }
+    ConnectionUtil connectionUtil;
+
+    @Inject
+    public NewsPresenter(ConnectionUtil connectionUtil){
+        this.connectionUtil = connectionUtil;
+    }
 
     @Override
     public void attachView(INewsContract.IView view) {
@@ -41,8 +47,8 @@ public class NewsPresenter implements INewsContract.IPresenter {
 
     @Override
     public void getNews(long idNews) {
-        view.startProgress(); //todo dagger
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        view.startProgress();
+        if (!connectionUtil.checkInternetConnection()) view.showInternetError();
         else {
             if (remoteRepository == null) { //todo dagger
                 remoteRepository = new RemoteRepository((NewsActivity) view);
