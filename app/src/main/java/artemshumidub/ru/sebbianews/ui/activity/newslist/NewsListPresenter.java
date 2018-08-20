@@ -1,16 +1,16 @@
 package artemshumidub.ru.sebbianews.ui.activity.newslist;
 
 import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import artemshumidub.ru.sebbianews.R;
-import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.remote.response.NewsListByCategoryResponse;
 import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import artemshumidub.ru.sebbianews.data.util.ConnectionUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,16 +25,18 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     private RemoteRepository remoteRepository;
     private List<ShortNews> list;
     private boolean isLatsNewsGot = false;
-    private Context context;
+    private Context appContext;
+    ConnectionUtil connectionUtil;
 
-    NewsListPresenter(){
+    @Inject
+    public NewsListPresenter(Context appContext, ConnectionUtil connectionUtil){
+        this.appContext = appContext;
+        this.connectionUtil = connectionUtil;
         list = new ArrayList<>();
     }
 
     @Override
     public void attachView(INewsListContract.IView view) {
-        //todo dagger
-        context = (NewsListActivity)view;
         this.view = view;
     }
 
@@ -56,12 +58,12 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     @Override
     public void getFirstPageOfNewsList(long idCategory) {
         view.startProgress();
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()){
+        if (!connectionUtil.checkInternetConnection()){
             view.showInternetError();
             return;
         }
         if (remoteRepository == null) {
-            remoteRepository = new RemoteRepository((NewsListActivity) view);
+            remoteRepository = new RemoteRepository(appContext);
         }
         Observable<NewsListByCategoryResponse> observable = remoteRepository.getNewsList(idCategory, 0);
         observable.subscribeOn(Schedulers.io())
@@ -110,13 +112,13 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     public void getNextPageOfNewsList(long idCategory, int page) {
         if (isLatsNewsGot) return;
         view.showSmallProgressBar();
-        if (!NewsApp.getConnectionUtil().checkInternetConnection()){ //todo dagger
-            view.showMessage(context.getResources().getString(R.string.internet_error));
+        if (!connectionUtil.checkInternetConnection()){
+            view.showMessage(appContext.getResources().getString(R.string.internet_error));
             view.hideSmallProgressBar();
             return;
         }
         if (remoteRepository == null) {
-            remoteRepository = new RemoteRepository((NewsListActivity) view);
+            remoteRepository = new RemoteRepository(appContext);
         }
         Observable<NewsListByCategoryResponse> observable = remoteRepository.getNewsList(idCategory, page);
         observable.subscribeOn(Schedulers.io())
@@ -147,12 +149,11 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                     public void onError(Throwable e) {
                         view.setPage(0);
                         if (e instanceof ServerErrorException) {
-                            //todo dagger + app context
-                            view.showMessage(context.getResources().getString(R.string.server_error));
+                            view.showMessage(appContext.getResources().getString(R.string.server_error));
                         } else if (e instanceof NoInternetException) {
-                           view.showMessage(context.getResources().getString(R.string.internet_error));
+                           view.showMessage(appContext.getResources().getString(R.string.internet_error));
                         } else {
-                            view.showMessage(context.getResources().getString(R.string.unknown_error));
+                            view.showMessage(appContext.getResources().getString(R.string.unknown_error));
                     }
                         view.hideSmallProgressBar();
                         view.setNewsListGetting(false);
@@ -164,6 +165,14 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
                         view.setNewsListGetting(false);
                     }
                 });
+    }
+
+    @Override
+    public void goToNews(long idNews) {
+        if (connectionUtil.checkInternetConnection()){
+           view.goToNews(idNews);
+        } else {
+            view.showMessage(appContext.getResources().getString(R.string.internet_error));}
     }
 }
 

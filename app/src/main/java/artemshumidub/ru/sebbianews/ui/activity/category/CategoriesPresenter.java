@@ -1,11 +1,13 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
-import artemshumidub.ru.sebbianews.NewsApp;
+import android.content.Context;
+import javax.inject.Inject;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
 import artemshumidub.ru.sebbianews.data.exception.UnknownException;
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
 import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
+import artemshumidub.ru.sebbianews.data.util.ConnectionUtil;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -16,8 +18,14 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     private ICategoriesContract.IView view;
     private RemoteRepository remoteRepository;
+    private ConnectionUtil connectionUtil;
+    private Context appContext;
 
-    CategoriesPresenter(){ }
+    @Inject
+    public CategoriesPresenter(Context appContext, ConnectionUtil connectionUtil){
+        this.appContext = appContext;
+        this.connectionUtil = connectionUtil;
+    }
 
     @Override
     public void attachView(ICategoriesContract.IView view) {
@@ -48,11 +56,11 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     @Override
     public void getCategories() {
-        view.startProgress();  //todo dagger
-        if(!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        view.startProgress();
+        if(!connectionUtil.checkInternetConnection()) view.showInternetError();
         else {
-            if (remoteRepository == null){ //todo dagger
-                remoteRepository = new RemoteRepository((CategoriesActivity) view);
+            if (remoteRepository == null){
+                remoteRepository = new RemoteRepository(appContext);
             }
             Observable<CategoryResponse> observable = remoteRepository.getCategory();
             observable.subscribeOn(Schedulers.io())
@@ -64,7 +72,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
                         @Override
                         public void onNext(CategoryResponse response) {
                             view.stopProgress();
-                            if (response.getList().size() == 0) view.showEmptyContentMessage();
+                            if (response.getList().isEmpty()) view.showEmptyContentMessage();
                             else view.setCategories(response.getList());
                         }
 

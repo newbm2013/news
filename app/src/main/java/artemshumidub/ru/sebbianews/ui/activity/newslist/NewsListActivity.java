@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
@@ -51,16 +53,19 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     @BindView(R.id.unknoun_error_layout)
     FrameLayout unknownErrorLayout;
 
+    @Inject
+    NewsListPresenter presenter;
+
     private long idCategory = 0;
     private int page = 0;
     private static final String TITLE_TEXT = "Список новостей" ;
 
-    private NewsListPresenter presenter;
     private NewsListRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivityComponent().inject(this);
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this);
 
@@ -74,7 +79,6 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        presenter = new NewsListPresenter();
         presenter.attachView(this);
         presenter.getFirstPageOfNewsList(idCategory);
 
@@ -170,7 +174,7 @@ public class NewsListActivity extends BaseActivity implements INewsListContract.
     @Override
     public void setNewsList(List<ShortNews> list) {
         adapter = new NewsListRVAdapter(list);
-        adapter.setOnItemListener(this::goToNews);
+        adapter.setOnItemListener(presenter::goToNews);
         adapter.setOnLastPosition((List<ShortNews> oldList)->
             presenter.getNextPageOfNewsList(idCategory, page));
         if (recyclerView!=null) {

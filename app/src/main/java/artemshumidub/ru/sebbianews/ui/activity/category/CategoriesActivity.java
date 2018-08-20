@@ -11,6 +11,9 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
@@ -40,16 +43,19 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     @BindView(R.id.unknoun_error_layout)
     FrameLayout unknownErrorLayout;
 
+    @Inject
+    CategoriesPresenter presenter;
+
     public static final String ID_CATEGORY_KEY = "idCategory";
     private final static String TITLE_TEXT = "Список категорий";
-    private CategoriesPresenter presenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivityComponent().inject(this);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
-        presenter = new CategoriesPresenter();
         presenter.attachView(this);
         presenter.getCategories();
         if (getSupportActionBar()!=null) getSupportActionBar().setTitle(TITLE_TEXT);
