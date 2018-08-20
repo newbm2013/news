@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "artemshumidub.ru.sebbianews"
-        minSdkVersion 22
+        minSdkVersion 19
         //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 1
