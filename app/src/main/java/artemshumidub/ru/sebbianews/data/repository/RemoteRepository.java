@@ -1,7 +1,6 @@
 package artemshumidub.ru.sebbianews.data.repository;
 
 import android.content.Context;
-
 import artemshumidub.ru.sebbianews.data.remote.RetrofitHelper;
 import artemshumidub.ru.sebbianews.data.remote.api.NewsApi;
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
@@ -14,7 +13,7 @@ public class RemoteRepository implements IRemoteRepositoryContract {
     private static NewsApi newsApiClient;
 
     public RemoteRepository(Context context) {
-        if (newsApiClient == null) newsApiClient = new RetrofitHelper().getRestService(context);
+        newsApiClient = new RetrofitHelper(context).getRestService();
     }
 
     @Override

@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import artemshumidub.ru.sebbianews.R;
@@ -57,7 +60,8 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
-    private NewsPresenter presenter;
+    @Inject
+    NewsPresenter presenter;
 
     public static final String ID_NEWS_KEY = "idNews";
     private long idNews = 0;
@@ -67,12 +71,12 @@ public class NewsActivity extends BaseActivity implements  INewsContract.IView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivityComponent().inject(this);
         setContentView(R.layout.activity_news);
         ButterKnife.bind(this);
         if (getIntent().getExtras()!=null){
             idNews = getIntent().getExtras().getLong(ID_NEWS_KEY, 0);
         }
-        presenter = new NewsPresenter();
         presenter.attachView(this);
         setSupportActionBar(toolbar);
         setAppBarLayoutExpandable(false);

@@ -18,15 +18,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
-    /**
-     * Создание rest сервиса
-     *
-     * @return Rest сервис
-     */
-    public NewsApi getRestService(Context appContext) {
+
+    private CommontInterceptor commontInterceptor;
+
+    public RetrofitHelper(Context context){
+        commontInterceptor = new CommontInterceptor(context);
+    }
+
+    public NewsApi getRestService() {
         Gson gson = new GsonBuilder().setLenient().create();
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        CommontInterceptor commontInterceptor = new CommontInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
