@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.category.CategoriesActivity">
+    tools:context=".ui.activity.newslist.NewsListActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/category_swipe_refresh_layout"
+        android:id="@+id/news_list_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,10 +16,33 @@
         app:layout_constraintBottom_toTopOf="parent"
         tools:visibility="visible">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/category_rv"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/news_list_rv"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </android.support.v7.widget.RecyclerView>
+
+            <include layout="@layout/progress_bar_news_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                style="?android:attr/progressBarStyle"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -31,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent" />
 
-    <include layout="@layout/textview_empty_content"
+    <include layout="@layout/empty_content_layout"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"/>
 
-    <include layout="@layout/textview_internet_error"
+    <include layout="@layout/internet_error_layout"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"/>
 
-    <include layout="@layout/textview_server_error"
+    <include layout="@layout/server_error_layout"
         android:visibility="invisible"
         tools:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,5 +78,12 @@
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintBottom_toTopOf="parent"/>
 
+    <include layout="@layout/unknown_error_layout"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,29 +1,28 @@
 package artemshumidub.ru.sebbianews.data.remote.response;
 
 import com.google.gson.annotations.SerializedName;
-
-import artemshumidub.ru.sebbianews.data.entity.News;
+import artemshumidub.ru.sebbianews.data.entity.FullNews;
 
 public class NewsResponse {
     @SerializedName("code")
-    private Long code;
+    private int code;
 
-    @SerializedName("news") // new и остальные поля надо переписать
-    private News news;
+    @SerializedName("news")
+    private FullNews news;
 
-    public Long getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
-    public News getNews() {
+    public FullNews getNews() {
         return news;
     }
 
-    public void setNews(News news) {
+    public void setNews(FullNews news) {
         this.news = news;
     }
 }

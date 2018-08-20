@@ -1,9 +1,9 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
-import artemshumidub.ru.sebbianews.SebbiaNewsApp;
-import artemshumidub.ru.sebbianews.data.entity.Category;
+import artemshumidub.ru.sebbianews.NewsApp;
 import artemshumidub.ru.sebbianews.data.exception.NoInternetException;
 import artemshumidub.ru.sebbianews.data.exception.ServerErrorException;
+import artemshumidub.ru.sebbianews.data.exception.UnknownException;
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
 import artemshumidub.ru.sebbianews.data.repository.RemoteRepository;
 import io.reactivex.Observable;
@@ -17,9 +17,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
     private ICategoriesContract.IView view;
     private RemoteRepository remoteRepository;
 
-    CategoriesPresenter(ICategoriesContract.IView view){
-        attachView(view);
-    }
+    CategoriesPresenter(){ }
 
     @Override
     public void attachView(ICategoriesContract.IView view) {
@@ -33,9 +31,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     @Override
     @SuppressWarnings("unused")
-    public void onStart() {
-
-    }
+    public void onStart() {  }
 
     @Override
     public void onStop() {
@@ -44,26 +40,20 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
 
     @Override
     @SuppressWarnings("unused")
-    public void onResume() {
-
-    }
+    public void onResume() {  }
 
     @Override
     @SuppressWarnings("unused")
-    public void onPause() {
-
-    }
+    public void onPause() {   }
 
     @Override
     public void getCategories() {
-        view.startProgress();
-        if(!SebbiaNewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
+        view.startProgress();  //todo dagger
+        if(!NewsApp.getConnectionUtil().checkInternetConnection()) view.showInternetError();
         else {
-
-            if (remoteRepository == null){
+            if (remoteRepository == null){ //todo dagger
                 remoteRepository = new RemoteRepository((CategoriesActivity) view);
             }
-
             Observable<CategoryResponse> observable = remoteRepository.getCategory();
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -82,6 +72,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
                         public void onError(Throwable e) {
                             if (e instanceof ServerErrorException){view.showServerError();}
                             else if (e instanceof NoInternetException){view.showInternetError();}
+                            else if (e instanceof UnknownException){view.showUnknownError();}
                         }
 
                         @Override

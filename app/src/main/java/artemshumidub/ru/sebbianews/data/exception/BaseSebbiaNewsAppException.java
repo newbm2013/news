@@ -1,4 +1,6 @@
 package artemshumidub.ru.sebbianews.data.exception;
 
-public class BaseSebbiaNewsAppException extends Exception {
+import java.io.IOException;
+
+class BaseSebbiaNewsAppException extends IOException {
 }

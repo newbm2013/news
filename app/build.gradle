@@ -5,6 +5,7 @@ android {
     defaultConfig {
         applicationId "artemshumidub.ru.sebbianews"
         minSdkVersion 22
+        //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -20,6 +21,18 @@ android {
             buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
         }
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs = [
+                        'src/main/res',
+                        'src/main/res/news',
+                        'src/main/res/newslist',
+                        'src/main/res/category',
+                        'src/main/res/emptystate']
+            }
+        }
+    }
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
@@ -33,9 +46,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
-
-    // Paging
-    implementation 'android.arch.paging:runtime:1.0.1'
+    implementation  'com.android.support:design:27.1.1'
 
     // RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.1.8'

@@ -5,7 +5,7 @@ import android.app.Application;
 
 import artemshumidub.ru.sebbianews.data.util.ConnectionUtil;
 
-public class SebbiaNewsApp extends Application {
+public class NewsApp extends Application {
 
     @SuppressLint("StaticFieldLeak")
     private static ConnectionUtil connectionUtil;

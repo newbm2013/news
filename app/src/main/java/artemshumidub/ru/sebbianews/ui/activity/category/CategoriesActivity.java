@@ -1,21 +1,21 @@
 package artemshumidub.ru.sebbianews.ui.activity.category;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.FrameLayout;
-
-import java.util.ArrayList;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import java.util.List;
-
 import artemshumidub.ru.sebbianews.R;
 import artemshumidub.ru.sebbianews.data.entity.Category;
 import artemshumidub.ru.sebbianews.ui.activity.base.BaseActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import artemshumidub.ru.sebbianews.ui.activity.newslist.NewsListActivity;
+import artemshumidub.ru.sebbianews.ui.adapter.CategoryRVAdapter;
 
 public class CategoriesActivity extends BaseActivity implements ICategoriesContract.IView{
 
@@ -37,6 +37,11 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     @BindView(R.id.server_error_layout)
     FrameLayout serverErrorLayout;
 
+    @BindView(R.id.unknoun_error_layout)
+    FrameLayout unknownErrorLayout;
+
+    public static final String ID_CATEGORY_KEY = "idCategory";
+    private final static String TITLE_TEXT = "Список категорий";
     private CategoriesPresenter presenter;
 
     @Override
@@ -44,17 +49,20 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
-
-        presenter = new CategoriesPresenter(this);
+        presenter = new CategoriesPresenter();
+        presenter.attachView(this);
         presenter.getCategories();
-
+        if (getSupportActionBar()!=null) getSupportActionBar().setTitle(TITLE_TEXT);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        swipeRefreshLayout.setOnRefreshListener(() ->
+            presenter.getCategories());
+    }
 
-
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            presenter.getCategories();
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.detachView();
     }
 
     @Override
@@ -70,6 +78,12 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     }
 
     @Override
+    public void showUnknownError() {
+        clearScreen();
+        unknownErrorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showEmptyContentMessage() {
         clearScreen();
         emptyContentLayout.setVisibility(View.VISIBLE);
@@ -81,6 +95,7 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
         emptyContentLayout.setVisibility(View.INVISIBLE);
         internetErrorLayout.setVisibility(View.INVISIBLE);
         serverErrorLayout.setVisibility(View.INVISIBLE);
+        unknownErrorLayout.setVisibility(View.INVISIBLE);
         stopProgress();
     }
 
@@ -106,11 +121,18 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
 
     @Override
     public void setCategories(List<Category> list) {
-        //todo change parameter List
         CategoryRVAdapter adapter = new CategoryRVAdapter(this, list);
+        adapter.setOnItemListener(this::goToNewsList);
         if (recyclerView!=null) {
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void goToNewsList(long idCategory) {
+        Intent intent = new Intent(this, NewsListActivity.class);
+        intent.putExtra(ID_CATEGORY_KEY, idCategory);
+        startActivity(intent);
     }
 }

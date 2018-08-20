@@ -15,14 +15,22 @@ public interface NewsApi {
     * Получить список категорий
     *
     */
-
     @GET("news/categories")
     Observable<CategoryResponse> getListOfCategories();
 
-    @GET("news/categories/{id}/news")
-    Observable<NewsListByCategoryResponse> getNewsList(@Path("id") int idCategory, @Query("page") int page);
 
+    /**
+     * Получить список новостей по id категории
+     *
+     */
+    @GET("news/categories/{id}/news")
+    Observable<NewsListByCategoryResponse> getNewsList(@Path("id") long idCategory, @Query("page") int page);
+
+    /**
+     * Получить новость по id новости
+     *
+     */
     @GET("news/details")
-    Observable<NewsResponse> getNews(@Query("id") int idNews);
+    Observable<NewsResponse> getNews(@Query("id") long idNews);
 
 }

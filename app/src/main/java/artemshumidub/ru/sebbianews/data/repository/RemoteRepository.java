@@ -2,7 +2,6 @@ package artemshumidub.ru.sebbianews.data.repository;
 
 import android.content.Context;
 
-import artemshumidub.ru.sebbianews.data.entity.ShortNews;
 import artemshumidub.ru.sebbianews.data.remote.RetrofitHelper;
 import artemshumidub.ru.sebbianews.data.remote.api.NewsApi;
 import artemshumidub.ru.sebbianews.data.remote.response.CategoryResponse;
@@ -24,12 +23,12 @@ public class RemoteRepository implements IRemoteRepositoryContract {
     }
 
     @Override
-    public Observable<NewsListByCategoryResponse> getNewsList(int categoryId, int page) {
+    public Observable<NewsListByCategoryResponse> getNewsList(long categoryId, int page) {
         return newsApiClient.getNewsList(categoryId, page);
     }
 
     @Override
-    public Observable<NewsResponse> getNews(int idNews) {
+    public Observable<NewsResponse> getNews(long idNews) {
         return newsApiClient.getNews(idNews);
     }
 

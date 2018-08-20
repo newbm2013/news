@@ -7,12 +7,12 @@ import java.util.List;
 public class Category {
 
     @SerializedName("id")
-    private int id;
+    private long id;
 
     @SerializedName("name")
     private String name;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -19,6 +19,11 @@ public interface IViewContract {
     void showServerError();
 
     /**
+     * Остальные ошибки
+     */
+    void showUnknownError();
+
+    /**
      * Нет контента
      */
     void showEmptyContentMessage();
@@ -27,15 +32,5 @@ public interface IViewContract {
      * скрыть контент и все empty states (нет интернета, ошибка ссервера, нет контента, прогресс)
      */
     void clearScreen();
-
-    /**
-    * Старт прогресса
-    */
-    void startProgress();
-
-    /**
-     * Стоп прогресса
-     */
-    void stopProgress();
 
 }
