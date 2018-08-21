@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "704319352383",
+    "firebase_url": "https://news-e5c60.firebaseio.com",
+    "project_id": "news-e5c60",
+    "storage_bucket": "news-e5c60.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704319352383:android:58450ca207d2327b",
+        "android_client_info": {
+          "package_name": "artemshumidub.ru.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "704319352383-qtli96loig1nqs1bpkbloek37c3sojm1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyQLQnJHqYOAuULUR2lIV5fjZKRbnByMo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
