@@ -31,6 +31,9 @@
         <activity android:name=".ui.activity.newslist.NewsListActivity"
             android:screenOrientation="portrait">
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="558b2e38ae3607c06a5aad5a61dd93cb1d63f020" />
     </application>
 
 </manifest>
