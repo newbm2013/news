@@ -9,7 +9,8 @@ Retrofit,
 GSON,  
 ButterKnife,  
 Firebase Analytics,  
-Firebase Crashlitiscs**  
+Firebase Crashlitiscs,  
+Fabric Crashlitiscs**  
 and other.  
 
 And at an early date I'm going add some libraries and instrumens:  
