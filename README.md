@@ -18,4 +18,4 @@ and **Crashlytics**.
 
 [You can download apk file here](https://github.com/shumidub/news/raw/master/app/build/outputs/apk/debug/app-debug.apk)
 
-<img src="screenshots/app_demo.gif" width="340" height="600" />
+<img src="screenshots/app_demo.gif" width="233" height="400" />
