@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.crashlytics.android.Crashlytics;
+import io.fabric.sdk.android.Fabric;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -53,6 +55,7 @@ public class CategoriesActivity extends BaseActivity implements ICategoriesContr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         getActivityComponent().inject(this);
         setContentView(R.layout.activity_categories);
         ButterKnife.bind(this);
