@@ -12,7 +12,7 @@ ButterKnife** and other.
 And at an early date I'm going add some libraries and instrumens:  
 **Glide,  
 Room,  
-firebase Analitics,  
+Firebase Analitics,  
 Perfomance**  
 and **Crashlytics**.  
 
