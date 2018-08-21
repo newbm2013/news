@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "artemshumidub.ru.sebbianews"
+        applicationId "artemshumidub.ru.news"
         minSdkVersion 19
         //noinspection OldTargetApi
         targetSdkVersion 27
