@@ -32,9 +32,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
+//            buildConfigField "String", "REST_END_POINT", ""http://news-service.getsandbox.com/""
         }
         debug{
-            buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
+//            buildConfigField "String", "REST_END_POINT", "\"http://testtask.sebbia.com/v1/\""
+            buildConfigField "String", "REST_END_POINT", "\"http://news-service.getsandbox.com/\""
         }
     }
     sourceSets {
