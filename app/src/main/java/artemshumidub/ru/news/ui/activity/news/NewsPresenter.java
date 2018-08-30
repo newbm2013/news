@@ -19,7 +19,7 @@ public class NewsPresenter implements INewsContract.IPresenter {
     private RemoteRepository remoteRepository;
 
     private Context appContext;
-    ConnectionUtil connectionUtil;
+    private ConnectionUtil connectionUtil;
 
     @Inject
     public NewsPresenter(Context appContext, ConnectionUtil connectionUtil){

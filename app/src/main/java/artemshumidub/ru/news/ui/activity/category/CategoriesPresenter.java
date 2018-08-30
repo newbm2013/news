@@ -42,9 +42,7 @@ public class CategoriesPresenter implements ICategoriesContract.IPresenter {
     public void onStart() {  }
 
     @Override
-    public void onStop() {
-        detachView();
-    }
+    public void onStop() {  }
 
     @Override
     @SuppressWarnings("unused")

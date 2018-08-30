@@ -26,7 +26,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     private List<ShortNews> list;
     private boolean isLatsNewsGot = false;
     private Context appContext;
-    ConnectionUtil connectionUtil;
+    private ConnectionUtil connectionUtil;
 
     @Inject
     public NewsListPresenter(Context appContext, ConnectionUtil connectionUtil){
@@ -44,7 +44,7 @@ public class NewsListPresenter implements INewsListContract.IPresenter  {
     public void detachView() { this.view=null;   }
 
     @Override
-    public void onStart() {    }
+    public void onStart() {   }
 
     @Override
     public void onStop() {   }
