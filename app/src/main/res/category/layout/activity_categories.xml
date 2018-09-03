@@ -7,6 +7,7 @@
     tools:context=".ui.activity.category.CategoriesActivity">
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:theme="@style/WhiteBlackTheme"
         android:id="@+id/category_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
